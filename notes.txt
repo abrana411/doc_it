@@ -1,0 +1,35 @@
+1 Getting started with google Sign in:-
+Steps:-
+1 get the google sign in package
+2 from the package it self go to the google cloud platform API
+3 create a new project there and select it
+4 go to the credential and then add credential and then OAuth client ID
+5 then configure consent screen -> external
+6 add the details -> then scope(email and profile info in this case) and the testing users 
+7 can publish app at any time from the dashboard if we want
+8 Then again go to the 4th point and now we can create OAuth client ID , so for that simply create one and then download the json file after creating
+9 move this file to the android->app (and change the name to say google_services)
+
+Also in the android->app->build.gradle , change the minsdk version to 21 and add multiDexEnabled true
+
+For Web too -> create a OAuth client Id:
+and for that the javascript origins uri will be the url on which the app will run (so if hosted then we can giev that url , else we will use http://localhost:3000 (port can be anything else too))
+and download the json file too (Though not needed)
+We need to now add this line(from the google sign in web integration documentation) ->  <meta name="google-signin-client_id" content="YOUR_GOOGLE_SIGN_IN_OAUTH_CLIENT_ID.apps.googleusercontent.com"> into the index.html in web (inside the head tag) and then
+we will simply add the google sign in OAuth client id (from the dashboard) for the web in it
+
+To run on web(Since we passed 3000 host the below line (from documentation too) will be needed)
+flutter run -d chrome --web-port 3000
+
+
+How to use RiverPod:-
+1 We first have to create the provider for a class (so that could access its content anywhere with ease)
+so instead of statelessWidget ->  we will use consumer widget and in the buold we will also have one more thing -> Wiudget ref , using which
+we can access the content of any provider , like :-
+Inside build:-
+ref.watch(authRepoprovider).anymethodofClass() 
+Outside build:-
+use read() instead of watch
+
+Also just like in normal provider we binds the main.dart runapp me jo run krte hai myApp to the change notifier provider to bind the scope of all providers
+here too in riverpod we user the providerScope() to bind it

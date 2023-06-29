@@ -1,0 +1,3 @@
+# For node:
+/node_modules
+.env
