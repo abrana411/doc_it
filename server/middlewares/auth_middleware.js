@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 //and this will be used in each of the auth protected routes
 const authMid = async(req,res,next)=>{
   try {
+    // console.log("Yooo");
     //get the token from the header
     const token = req.header("User_token");
     if(!token)

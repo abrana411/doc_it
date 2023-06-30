@@ -37,6 +37,9 @@ dependencies:
   http: ^0.13.5
   flutter_riverpod: ^2.3.6 #for the state management
   shared_preferences: ^2.1.2 #for state persistence (as we want to store the token into the local storage)
+  routemaster: ^1.0.1 #It is a package based upon the router 2.0 in flutter , so we can use this to set routes easily and could also set the dynamic routes if needed
+  flutter_quill: ^6.0.0 #will use this package to get the text editor options
+  socket_io_client: ^1.0.2 #for stablishig the socket cone=nection so that the changes are reflected in real time to all the users collaborating on the same document , also in node js we have installed socket_io there too in the package.json as this is needed in both the client as well as the server side
 
 dev_dependencies:
   flutter_test:

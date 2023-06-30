@@ -32,4 +32,6 @@ Outside build:-
 use read() instead of watch
 
 Also just like in normal provider we binds the main.dart runapp me jo run krte hai myApp to the change notifier provider to bind the scope of all providers
-here too in riverpod we user the providerScope() to bind it
+here too in riverpod we use the providerScope() to bind it
+
+in stateful widget we can use consumerstateful ie just add consumer before it , and then the ref is available in all the widget (when it is stateful ie not only in the build like in stateless widget)
