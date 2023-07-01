@@ -50,6 +50,9 @@ const start = async function(){
              
              //Now we can display the save messages in the UI of each client if we want 
              //using the io.to() (to send some data to each clint (including the sender) or socket.to(sending to the sender only))
+             const dateObject = new Date();
+             let date = dateObject.toUTCString();
+             io.to(data.room).emit("UpdateSave",date);
         })
 
         )});

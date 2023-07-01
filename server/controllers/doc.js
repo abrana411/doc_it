@@ -49,4 +49,15 @@ const getDocById = async(req,res)=>{
       } 
 }
 
-module.exports = {createDoc,getDocsOfUser,updateTitle,getDocById};
+//Delete a document:-
+const deleteADoc = async(req,res)=>{
+  try {
+    const {id} = req.params;//as in the route it will be /doc/:id
+    let doc = await docModel.findByIdAndDelete(id);
+    res.json(doc);
+  } catch (error) {
+    res.status(500).json({errMsg:`Some error occured : ${error}`});
+  } 
+};
+
+module.exports = {createDoc,getDocsOfUser,updateTitle,getDocById,deleteADoc};
