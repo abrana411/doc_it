@@ -184,4 +184,38 @@ class DocRepo {
     }
     return error;
   }
+
+  //http call to delete a document:-
+  Future<ErrorModel> deleteDoc(
+      {required String docId, required String token}) async {
+    ErrorModel error = ErrorModel(
+      error: 'Some unexpected error occurred.',
+      data: null,
+    );
+    try {
+      var res = await _client.delete(
+        Uri.parse('$initialUrl/doc/$docId'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'User_token': token,
+        },
+      );
+      switch (res.statusCode) {
+        case 200:
+          error = ErrorModel(
+            error: null,
+            data: "Deleted",
+          );
+          break;
+        default:
+          throw "No document with this Id exists!";
+      }
+    } catch (e) {
+      error = ErrorModel(
+        error: e.toString(),
+        data: null,
+      );
+    }
+    return error;
+  }
 }

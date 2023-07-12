@@ -31,6 +31,9 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
   //getting the socket :-
   SocketRepo socketRepo =
       SocketRepo(); //This will get the sockeClient to get the insatnce of the SocketClient class so the connection should be made if havenot
+
+  final StreamController<String> _documentUpdatesController =
+      StreamController<String>();
   @override
   void initState() {
     super.initState();
@@ -57,7 +60,7 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
         });
 
     //Saving the data every 3 seconds:-
-    Timer.periodic(const Duration(seconds: 3), (timer) {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
       socketRepo.saveDoc(<String, dynamic>{
         'delta': _quillController!.document
             .toDelta(), //this is how we can get the delata of the current document from the controller
@@ -65,6 +68,11 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
             .docId, //passing the current doc id (as we want to save this only)
       });
     });
+
+    //listening to save changes:-
+    socketRepo.listenSave(
+      (date) => {_documentUpdatesController.add(date)},
+    );
   }
 
   fethctheDocData() async {
@@ -141,6 +149,24 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
       );
     }
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //Saving the title too:-
+          updateTitle(_titlecontroller.text);
+
+          //Saving the doc on cliking too:-
+          socketRepo.saveDoc(<String, dynamic>{
+            'delta': _quillController!.document.toDelta(),
+            'room': widget.docId,
+          });
+        },
+        backgroundColor: Colors.blue, // Customize the button background color
+        foregroundColor: Colors.white,
+        child: const Icon(
+          Icons.save,
+          size: 25,
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: bg1Color,
         elevation: 0,
@@ -171,13 +197,14 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
               ),
               label: const Text('Share'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: bt1Color,
+                backgroundColor: Colors.green.withOpacity(0.9),
               ),
             ),
           ),
         ],
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 9.0),
+        leadingWidth: MediaQuery.of(context).size.width * 0.7,
+        leading: Padding(
+          padding: const EdgeInsets.all(10),
           child: Row(
             children: [
               GestureDetector(
@@ -185,8 +212,8 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
                   Routemaster.of(context).replace('/');
                 },
                 child: Image.asset(
-                  'assets/images/googleLogo.png',
-                  height: 20,
+                  'assets/images/logo.png',
+                  height: MediaQuery.of(context).size.height * 0.2,
                 ),
               ),
               const SizedBox(width: 10),
@@ -195,10 +222,11 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
                 child: TextField(
                     controller: _titlecontroller,
                     decoration: InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey.shade400)),
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: Colors.grey.shade500,
+                          color: Colors.grey,
                         ),
                       ),
                       contentPadding: const EdgeInsets.only(left: 10),
@@ -233,6 +261,7 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
                   quill.QuillToolbar.basic(controller: _quillController!),
                   const SizedBox(height: 10),
                   Expanded(
+                    flex: 12,
                     child: SizedBox(
                       width: 750,
                       child: Card(
@@ -247,7 +276,38 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Colors.black.withOpacity(0.9),
+                        // height: 100,
+                        child: Center(
+                          child: StreamBuilder<String>(
+                            stream: _documentUpdatesController.stream,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                // Use the data from the stream to display the "last saved on" message
+                                return Text(
+                                  'Last Saved On: ${snapshot.data}',
+                                  style: const TextStyle(color: Colors.blue),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text(
+                                  'Error: ${snapshot.error}',
+                                  style: const TextStyle(color: Colors.red),
+                                );
+                              } else {
+                                // Handle the case when there's no data yet
+                                return const Text(
+                                  'Not saved yet!',
+                                  style: TextStyle(color: Colors.red),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ))
                 ],
               ),
             ),

@@ -1,5 +1,3 @@
-import 'package:doc_it/Screens/Home_Screen.dart';
-import 'package:doc_it/Screens/login_screen.dart';
 import 'package:doc_it/models/error_model.dart';
 import 'package:doc_it/repository/auth_repo.dart';
 import 'package:doc_it/router.dart';

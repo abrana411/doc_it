@@ -36,4 +36,9 @@ class SocketRepo {
     //firing the save event (will listen to it in the backend now (since fired from frontend))
     _socketClient.emit("save", data);
   }
+
+  //Showing a snakbar whenever the document is saved
+  void listenSave(Function(String date) func) {
+    _socketClient.on("UpdateSave", (date) => func(date));
+  }
 }
