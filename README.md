@@ -1,17 +1,21 @@
-# doc_it
+# Doc IT
+A document managing application with a comprehensive text editor.
 
-A new Flutter project.
+# Features
+1) Google Authentication
+2) State Persistence using JWT token
+3) Creating new Documents
+4) Viewing List of Documents
+5) Updating Documents content
+6) Deleting a Document
+7) Link sharing / Document sharing
+8) Auto saving in every few seconds (Also have manual saving)
+9) Collaborative Editing in Rich Text Editor
+10) Real time collaboration using socketIO
+11) Sign Out
 
-## Getting Started
+# Tech Stack:-
+Server: Nodejs, Express, MongoDB, Mongoose, SocketIO
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Client: Flutter, Riverpod
 
